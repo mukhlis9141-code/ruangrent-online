@@ -68,6 +68,11 @@ revoke all on public.profiles from anon,authenticated;
 grant select on public.profiles to authenticated;
 grant update(full_name,phone) on public.profiles to authenticated;
 
+-- Explicit grants; RLS remains the authorization boundary.
+revoke all on public.rooms from anon,authenticated;
+grant select on public.rooms to anon,authenticated;
+grant insert,update,delete on public.rooms to authenticated;
+
 create policy "Public listing read" on public.rooms for select to anon,authenticated
  using (available=true or landlord_id=(select auth.uid()) or (select public.current_role())='admin');
 create policy "Landlord creates own rooms" on public.rooms for insert to authenticated
