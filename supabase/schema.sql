@@ -47,7 +47,7 @@ create or replace function public.current_role() returns public.user_role langua
  select role from public.profiles where id = (select auth.uid())
 $$;
 revoke all on function public.current_role() from public;
-grant execute on function public.current_role() to authenticated;
+grant execute on function public.current_role() to anon, authenticated;
 
 create or replace function public.room_owner(p_room uuid) returns uuid language sql stable security definer set search_path = '' as $$
  select landlord_id from public.rooms where id=p_room
